@@ -1,0 +1,20 @@
+{
+  "name": "udemynodeapi",
+  "version": "1.0.0",
+  "description": "Learning HTTP",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server",
+    "dev": "nodemon server"
+  },
+  "author": "Sasha Wang",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
