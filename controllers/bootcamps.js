@@ -7,7 +7,9 @@ const Bootcamp = require('../models/Bootcamp');
 // @access      Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   const bootcamps = await Bootcamp.find();
-  res.status(200).json({ success: true, message: bootcamps });
+  res
+    .status(200)
+    .json({ success: true, count: bootcamps.length, message: bootcamps });
 });
 
 // @desc        Get a specified bootcamp
@@ -26,14 +28,39 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 // @desc        Create a bootcamp
 // @route       GET /api/v1/bootcamps
 // @access      Private
-exports.createBootcamp = async (req, res, next) => {
-  try {
-    const bootcamp = await Bootcamp.create(req.body);
-    res.status(201).json({
-      success: true,
-      data: bootcamp,
-    });
-  } catch (err) {
-    next(err);
+exports.createBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.create(req.body);
+  res.status(201).json({
+    success: true,
+    data: bootcamp,
+  });
+});
+
+// @desc        Update bootcamp
+// @route       PUT /api/v1/bootcamps/:id
+// @access      Private
+exports.updateBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!bootcamp) {
+    return res.status(400).json({ success: false });
   }
-};
+
+  res.status(200).json({ success: true, data: bootcamp });
+});
+
+// @desc        Delete bootcamp
+// @route       DELETE /api/v1/bootcamps/:id
+// @access      Private
+exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+
+  if (!bootcamp) {
+    return res.status(400).json({ success: false });
+  }
+
+  res.status(200).json({ success: true, data: {} });
+});
